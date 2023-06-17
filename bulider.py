@@ -21,7 +21,7 @@ class Builder(ABC):
     def pizzaTopping(self) -> None:
         pass
 
-class ConcreteBuilder1(Builder):
+class ConcreteBuilderH(Builder):
     def __init__(self) -> None:
         self.reset()
 
@@ -75,7 +75,7 @@ class Waiter():
 
 if __name__ == "__main__":
     waiter = Waiter()
-    builder = ConcreteBuilder1()
+    builder = ConcreteBuilderH()
     waiter.builder = builder
 
     print("\t\tDesignPattern_Builder")
