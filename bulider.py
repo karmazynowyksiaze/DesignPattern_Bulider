@@ -126,7 +126,7 @@ if __name__ == "__main__":
         builder.product.list_elements()
         print("\n")
 
-        print("Custom Hawaiian Pizza elements ")
+        print("Custom Hawaiian Pizza elements")
         builder.pizzaDough()
         builder.pizzaSauce()
         builder.product.list_elements()
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
         print("\n")
 
-        print("Custom Spicy Pizza elements ")
+        print("Custom Spicy Pizza elements")
         builder.pizzaDough()
         builder.pizzaSauce()
         builder.product.list_elements()
