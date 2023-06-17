@@ -2,88 +2,90 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any
 
-class Pizza:
-    def init(self):
-        self.dough = ""
-        self.sauce = ""
-        self.topping = ""
+class Builder(ABC):
 
-    def setDough(self, dough):
-        self.dough = dough
-
-    def setSauce(self, sauce):
-        self.sauce = sauce
-
-    def setTopping(self, topping):
-        self.topping = topping
-
-class PizzaBuilder:
-    def getPizza(self):
-        return self.pizza
-
-    def createNewPizzaProduct(self):
-        self.pizza = Pizza()
-
-    def buildDough(self):
+    @property
+    @abstractmethod
+    def product(self) -> None:
         pass
 
-    def buildSauce(self):
+    @abstractmethod
+    def pizzaDough(self) -> None:
         pass
 
-    def buildTopping(self):
+    @abstractmethod
+    def pizzaSauce(self) -> None:
         pass
 
-class HawaiianPizzaBuilder(PizzaBuilder):
-    def buildDough(self):
-        self.pizza.setDough("thick")
+    @abstractmethod
+    def pizzaTopping(self) -> None:
+        pass
 
-    def buildSauce(self):
-        self.pizza.setSauce("mild")
+class ConcreteBuilder1(Builder):
+    def __init__(self) -> None:
+        self.reset()
 
-    def buildTopping(self):
-        self.pizza.setTopping("ham + pineapple")
+    def reset(self) -> None:
+        self._product = HawaiianPizza()
 
-class SpicyPizzaBuilder(PizzaBuilder):
-    def buildDough(self):
-        self.pizza.setDough("thin")
+    @property
+    def product(self) -> HawaiianPizza:
+        product = self._product
+        self.reset()
+        return product
 
-        def buildSauce(self):
-            self.pizza.setSauce("hot")
+    def pizzaDough(self) -> None:
+        self._product.add("thick")
 
-        def buildTopping(self):
-            self.pizza.setTopping("pepperoni + salami")
+    def pizzaSauce(self) -> None:
+        self._product.add("mild")
 
-        def list_parts(self):
-            print(f"Product parts: {', '.join(self.pizza)}", end="")
+    def pizzaTopping(self) -> None:
+        self._product.add("ham + pineapple")
 
-class Waiter:
-    def setPizzaBuilder(self, pizzaBuilder):
-        self.pizzaBuilder = pizzaBuilder
+class HawaiianPizza():
+    def __init__(self) -> None:
+        self.elements = []
 
-    def getPizza(self):
-        return self.pizzaBuilder.getPizza()
+    def add(self, part: Any) -> None:
+        self.elements.append(part)
 
-    def constructPizza(self):
-        self.pizzaBuilder.createNewPizzaProduct()
-        self.pizzaBuilder.buildDough()
-        self.pizzaBuilder.buildSauce()
-        self.pizzaBuilder.buildTopping()
+    def list_elements(self) -> None:
+        print(f"Pizza elements: {', '.join(self.elements)}", end="")
 
-    def constructPizzaWithoutSauce(self):
-        self.pizzaBuilder.createNewPizzaProduct()
-        self.pizzaBuilder.buildDough()
-        self.pizzaBuilder.buildTopping()
+class Waiter():
+    def __init__(self) -> None:
+        self._builder = None
 
+    @property
+    def builder(self) -> Builder:
+        return self._builder
+
+    @builder.setter
+    def builder(self, builder: Builder) -> None:
+        self._builder = builder
+
+    def build_minimal_pizza(self) -> None:
+        self.builder.pizzaDough()
+
+    def build_full_pizza(self) -> None:
+        self.builder.pizzaDough()
+        self.builder.pizzaSauce()
+        self.builder.pizzaTopping()
 
 if __name__ == "__main__":
     waiter = Waiter()
-    print ("What kind of pizza to prepare")
-    pizzaType = input("[h]HawaiianPizza [s]SpicyPizza: ")
-    if pizzaType == "h":
-        hawaiianPizzaBuilder = HawaiianPizzaBuilder()
-        waiter.setPizzaBuilder(hawaiianPizzaBuilder)
-        waiter.constructPizza()
-    if pizzaType == "s":
-        spicyPizzaBuilder = SpicyPizzaBuilder()
-        waiter.setPizzaBuilder(spicyPizzaBuilder)
-        waiter.constructPizza()
+    builder = ConcreteBuilder1()
+    waiter.builder = builder
+
+    print("\t\tDesignPattern_Builder")
+    print("\nHawaiian Pizza: ")
+    waiter.build_full_pizza()
+    builder.product.list_elements()
+
+    print("\n")
+
+    print("Custom Hawaiian Pizza elements: ")
+    builder.pizzaDough()
+    builder.pizzaSauce()
+    builder.product.list_elements()
