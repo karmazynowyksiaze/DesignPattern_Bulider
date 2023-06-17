@@ -1,3 +1,10 @@
+"""
+Imie i naziwsko: Pawel Pawlowski
+Grupa C7
+Numer indeksu: 14073
+"""
+
+
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any
@@ -106,13 +113,6 @@ class Waiter():
         self.builder.pizzaTopping()
 
 if __name__ == "__main__":
-
-
-    """
-    waiter = Waiter()
-    builderS = ConcreteBuilderS()
-    waiter.builder = builderS
-    """
     print("\t\tDesignPattern_Builder\n")
 
     pizzaType =input("{h}HawaiianPizza {s}SpicyPizza  ")
